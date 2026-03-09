@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موسوعة حروف - مسابقة ثقافية</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --deep: #0A0E1A;
+    --surface: #111827;
+    --surface2: #1A2235;
+    --border: rgba(201,168,76,0.25);
+    --text: #F0EAD6;
+    --text-muted: #8899AA;
+    --green: #2ECC71;
+    --red: #E74C3C;
+    --blue: #3B82F6;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘Tajawal’, sans-serif;
+background: var(–deep);
+color: var(–text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Animated background */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.06) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+padding: 20px;
+position: relative;
+z-index: 1;
+}
+
+/* Header */
+.header {
+text-align: center;
+padding: 40px 0 30px;
+border-bottom: 1px solid var(–border);
+margin-bottom: 30px;
+}
+
+.header-badge {
+display: inline-block;
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 3px;
+padding: 5px 16px;
+border-radius: 20px;
+margin-bottom: 16px;
+text-transform: uppercase;
+}
+
+.header h1 {
+font-family: ‘Amiri’, serif;
+font-size: clamp(32px, 6vw, 56px);
+font-weight: 700;
+background: linear-gradient(135deg, var(–gold-light), var(–gold), #fff);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+line-height: 1.2;
+margin-bottom: 8px;
+}
+
+.header p {
+color: var(–text-muted);
+font-size: 15px;
+font-weight: 300;
+}
+
+/* API Key section */
+.api-section {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 20px 24px;
+margin-bottom: 24px;
+display: flex;
+gap: 12px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.api-label {
+font-size: 13px;
+color: var(–gold);
+font-weight: 700;
+white-space: nowrap;
+}
+
+.api-input {
+flex: 1;
+min-width: 200px;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 14px;
+color: var(–text);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+outline: none;
+direction: ltr;
+text-align: left;
+}
+
+.api-input:focus { border-color: var(–gold); }
+
+.api-input::placeholder { color: var(–text-muted); }
+
+.save-btn {
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+border: none;
+border-radius: 10px;
+padding: 10px 20px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+cursor: pointer;
+white-space: nowrap;
+transition: opacity 0.2s;
+}
+.save-btn:hover { opacity: 0.85; }
+
+/* Controls */
+.controls {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 14px;
+margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+.controls { grid-template-columns: 1fr; }
+}
+
+.control-group label {
+display: block;
+font-size: 12px;
+color: var(–gold);
+font-weight: 700;
+margin-bottom: 8px;
+letter-spacing: 1px;
+}
+
+select {
+width: 100%;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 12px 16px;
+color: var(–text);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 14px;
+outline: none;
+cursor: pointer;
+appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23C9A84C’ stroke-width=‘2’ fill=‘none’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: left 12px center;
+transition: border-color 0.2s;
+}
+
+select:focus { border-color: var(–gold); }
+select option { background: var(–surface2); }
+
+/* Letter Grid */
+.letters-section {
+margin-bottom: 24px;
+}
+
+.section-title {
+font-size: 12px;
+color: var(–gold);
+font-weight: 700;
+letter-spacing: 2px;
+margin-bottom: 12px;
+}
+
+.letters-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+gap: 8px;
+}
+
+.letter-btn {
+aspect-ratio: 1;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+color: var(–text);
+font-family: ‘Amiri’, serif;
+font-size: 22px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+}
+
+.letter-btn:hover {
+border-color: var(–gold);
+background: var(–surface2);
+transform: translateY(-2px);
+}
+
+.letter-btn.active {
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+border-color: transparent;
+font-weight: 700;
+}
+
+/* Generate Button */
+.generate-btn {
+width: 100%;
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+border: none;
+border-radius: 14px;
+padding: 16px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 16px;
+font-weight: 900;
+cursor: pointer;
+transition: all 0.3s;
+margin-bottom: 24px;
+letter-spacing: 1px;
+position: relative;
+overflow: hidden;
+}
+
+.generate-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.generate-btn:active { transform: translateY(0); }
+.generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.generate-btn .btn-loading {
+display: none;
+gap: 6px;
+align-items: center;
+justify-content: center;
+}
+
+.generate-btn.loading .btn-text { display: none; }
+.generate-btn.loading .btn-loading { display: flex; }
+
+.dot {
+width: 8px; height: 8px;
+background: var(–deep);
+border-radius: 50%;
+animation: bounce 0.6s infinite alternate;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+to { transform: translateY(-6px); opacity: 0.5; }
+}
+
+/* Questions */
+.questions-container {
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+.question-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 22px 24px;
+animation: slideIn 0.4s ease backwards;
+position: relative;
+overflow: hidden;
+}
+
+.question-card::before {
+content: ‘’;
+position: absolute;
+top: 0; right: 0;
+width: 4px;
+height: 100%;
+background: linear-gradient(to bottom, var(–gold), transparent);
+}
+
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(16px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.question-card:nth-child(1) { animation-delay: 0.05s; }
+.question-card:nth-child(2) { animation-delay: 0.1s; }
+.question-card:nth-child(3) { animation-delay: 0.15s; }
+.question-card:nth-child(4) { animation-delay: 0.2s; }
+.question-card:nth-child(5) { animation-delay: 0.25s; }
+
+.q-header {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+margin-bottom: 14px;
+}
+
+.q-num {
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+font-size: 11px;
+font-weight: 900;
+padding: 4px 10px;
+border-radius: 20px;
+white-space: nowrap;
+flex-shrink: 0;
+margin-top: 2px;
+}
+
+.q-text {
+font-size: 17px;
+font-weight: 500;
+line-height: 1.6;
+color: var(–text);
+}
+
+.q-letter-tag {
+display: inline-block;
+background: rgba(201,168,76,0.15);
+border: 1px solid var(–border);
+color: var(–gold);
+font-family: ‘Amiri’, serif;
+font-size: 18px;
+padding: 2px 10px;
+border-radius: 8px;
+margin-left: 8px;
+}
+
+.q-meta {
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+margin-bottom: 14px;
+}
+
+.badge {
+font-size: 11px;
+padding: 3px 10px;
+border-radius: 20px;
+font-weight: 600;
+}
+
+.badge-cat {
+background: rgba(59,130,246,0.15);
+color: #93C5FD;
+border: 1px solid rgba(59,130,246,0.3);
+}
+
+.badge-diff {
+border: 1px solid;
+}
+.badge-diff.سهل { background: rgba(46,204,113,0.15); color: var(–green); border-color: rgba(46,204,113,0.3); }
+.badge-diff.متوسط { background: rgba(201,168,76,0.15); color: var(–gold); border-color: var(–border); }
+.badge-diff.صعب { background: rgba(231,76,60,0.15); color: var(–red); border-color: rgba(231,76,60,0.3); }
+
+.answer-toggle {
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 16px;
+color: var(–text-muted);
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+cursor: pointer;
+width: 100%;
+text-align: right;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.answer-toggle:hover { border-color: var(–gold); color: var(–text); }
+
+.answer-toggle .arrow { transition: transform 0.3s; }
+.answer-toggle.open .arrow { transform: rotate(180deg); }
+
+.answer-box {
+display: none;
+margin-top: 10px;
+background: rgba(46,204,113,0.08);
+border: 1px solid rgba(46,204,113,0.25);
+border-radius: 10px;
+padding: 12px 16px;
+color: var(–green);
+font-size: 15px;
+font-weight: 500;
+line-height: 1.6;
+}
+
+.answer-box.visible { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-4px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* Empty state */
+.empty-state {
+text-align: center;
+padding: 60px 20px;
+color: var(–text-muted);
+}
+
+.empty-state .icon {
+font-size: 60px;
+margin-bottom: 16px;
+opacity: 0.4;
+}
+
+.empty-state p { font-size: 15px; }
+
+/* Error */
+.error-box {
+background: rgba(231,76,60,0.1);
+border: 1px solid rgba(231,76,60,0.3);
+border-radius: 12px;
+padding: 16px 20px;
+color: #F87171;
+font-size: 14px;
+margin-bottom: 16px;
+display: none;
+}
+
+.error-box.show { display: block; }
+
+/* Divider */
+.divider {
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 6px 0 20px;
+}
+
+.divider-line {
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.divider-text {
+font-size: 11px;
+color: var(–text-muted);
+white-space: nowrap;
+}
+
+/* Stats bar */
+.stats-bar {
+display: flex;
+gap: 20px;
+justify-content: center;
+padding: 14px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+margin-bottom: 20px;
+flex-wrap: wrap;
+}
+
+.stat-item {
+text-align: center;
+}
+
+.stat-num {
+font-size: 22px;
+font-weight: 900;
+color: var(–gold);
+font-family: ‘Amiri’, serif;
+display: block;
+}
+
+.stat-label {
+font-size: 11px;
+color: var(–text-muted);
+display: block;
+}
+
+footer {
+text-align: center;
+padding: 30px 0 20px;
+color: var(–text-muted);
+font-size: 12px;
+border-top: 1px solid var(–border);
+margin-top: 40px;
+}
+
+.count-selector {
+display: flex;
+gap: 8px;
+margin-bottom: 24px;
+align-items: center;
+}
+
+.count-selector label {
+font-size: 12px;
+color: var(–gold);
+font-weight: 700;
+white-space: nowrap;
+}
+
+.count-btns { display: flex; gap: 6px; }
+
+.count-btn {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 8px;
+color: var(–text);
+padding: 7px 14px;
+font-family: ‘Tajawal’, sans-serif;
+font-size: 13px;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.count-btn.active {
+background: linear-gradient(135deg, var(–gold), var(–gold-light));
+color: var(–deep);
+border-color: transparent;
+font-weight: 700;
+}
+
+.count-btn:hover:not(.active) { border-color: var(–gold); }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <div class="header-badge">موسوعة ثقافية تفاعلية</div>
+    <h1>موسوعة حروف</h1>
+    <p>أسئلة ثقافية متنوعة من أ إلى ي — مولّدة بالذكاء الاصطناعي</p>
+  </header>
+
+  <!-- API Key -->
+
+  <div class="api-section">
+    <span class="api-label">🔑 Groq API Key</span>
+    <input type="password" class="api-input" id="apiKey" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" />
+    <button class="save-btn" onclick="saveKey()">حفظ</button>
+  </div>
+
+  <!-- Controls -->
+
+  <div class="controls">
+    <div class="control-group">
+      <label>التخصص</label>
+      <select id="category">
+        <option value="عواصم ودول">🌍 عواصم ودول</option>
+        <option value="علوم وطبيعة">🔬 علوم وطبيعة</option>
+        <option value="تاريخ وحضارات">📜 تاريخ وحضارات</option>
+        <option value="أدب ولغة عربية">📚 أدب ولغة عربية</option>
+        <option value="رياضة وألعاب">⚽ رياضة وألعاب</option>
+        <option value="فن وموسيقى">🎨 فن وموسيقى</option>
+        <option value="طب وصحة">🏥 طب وصحة</option>
+        <option value="جغرافيا وطبوغرافيا">🗺️ جغرافيا وطبوغرافيا</option>
+        <option value="ألغاز وأحاجي">🧩 ألغاز وأحاجي</option>
+        <option value="اختراعات وتكنولوجيا">💡 اختراعات وتكنولوجيا</option>
+        <option value="أمثال وحكم">💬 أمثال وحكم</option>
+        <option value="حيوانات ونباتات">🦁 حيوانات ونباتات</option>
+        <option value="فضاء وفلك">🚀 فضاء وفلك</option>
+        <option value="أديان وثقافات">☪️ أديان وثقافات</option>
+        <option value="اقتصاد وأعمال">💼 اقتصاد وأعمال</option>
+        <option value="سينما ودراما">🎬 سينما ودراما</option>
+        <option value="طعام ومطبخ">🍽️ طعام ومطبخ</option>
+        <option value="رياضيات ومنطق">🔢 رياضيات ومنطق</option>
+        <option value="شخصيات بارزة">👤 شخصيات بارزة</option>
+        <option value="معالم وأماكن">🏛️ معالم وأماكن</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>الصعوبة</label>
+      <select id="difficulty">
+        <option value="مختلطة">🎲 مختلطة</option>
+        <option value="سهل">🟢 سهل</option>
+        <option value="متوسط">🟡 متوسط</option>
+        <option value="صعب">🔴 صعب</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>الحرف</label>
+      <select id="letterSelect">
+        <option value="عشوائي">🎲 عشوائي</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Count selector -->
+
+  <div class="count-selector">
+    <label>عدد الأسئلة:</label>
+    <div class="count-btns">
+      <button class="count-btn" onclick="setCount(5, this)">٥</button>
+      <button class="count-btn active" onclick="setCount(10, this)">١٠</button>
+      <button class="count-btn" onclick="setCount(15, this)">١٥</button>
+      <button class="count-btn" onclick="setCount(20, this)">٢٠</button>
+    </div>
+  </div>
+
+  <!-- Letter Grid -->
+
+  <div class="letters-section">
+    <div class="section-title">اختر حرفاً مباشرة</div>
+    <div class="letters-grid" id="lettersGrid"></div>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">اضغط لتوليد الأسئلة</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Generate button -->
+
+  <button class="generate-btn" id="generateBtn" onclick="generateQuestions()">
+    <span class="btn-text">⚡ توليد الأسئلة</span>
+    <span class="btn-loading">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </span>
+  </button>
+
+  <!-- Error -->
+
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Stats bar (hidden initially) -->
+
+  <div class="stats-bar" id="statsBar" style="display:none;">
+    <div class="stat-item">
+      <span class="stat-num" id="statCount">0</span>
+      <span class="stat-label">سؤال</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="statLetter">-</span>
+      <span class="stat-label">الحرف</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="statCat">-</span>
+      <span class="stat-label">التخصص</span>
+    </div>
+  </div>
+
+  <!-- Questions -->
+
+  <div class="questions-container" id="questionsContainer">
+    <div class="empty-state">
+      <div class="icon">📖</div>
+      <p>أدخل مفتاح Groq API واختر الإعدادات لتوليد الأسئلة</p>
+    </div>
+  </div>
+
+  <footer>
+    موسوعة حروف — مولّدة بالذكاء الاصطناعي · Groq API
+  </footer>
+</div>
+
+<script>
+  const LETTERS = ['أ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
+  let selectedLetter = null;
+  let questionCount = 10;
+
+  // Init letter grid
+  const grid = document.getElementById('lettersGrid');
+  LETTERS.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'letter-btn';
+    btn.textContent = l;
+    btn.onclick = () => selectLetter(l, btn);
+    grid.appendChild(btn);
+
+    const opt = document.createElement('option');
+    opt.value = l;
+    opt.textContent = l;
+    document.getElementById('letterSelect').appendChild(opt);
+  });
+
+  function selectLetter(letter, btn) {
+    document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active'));
+    if (selectedLetter === letter) {
+      selectedLetter = null;
+      document.getElementById('letterSelect').value = 'عشوائي';
+    } else {
+      selectedLetter = letter;
+      btn.classList.add('active');
+      document.getElementById('letterSelect').value = letter;
+    }
+  }
+
+  document.getElementById('letterSelect').addEventListener('change', (e) => {
+    const val = e.target.value;
+    document.querySelectorAll('.letter-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent === val);
+    });
+    selectedLetter = val === 'عشوائي' ? null : val;
+  });
+
+  function setCount(n, btn) {
+    questionCount = n;
+    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function saveKey() {
+    const key = document.getElementById('apiKey').value.trim();
+    if (key) {
+      sessionStorage.setItem('groq_key', key);
+      alert('✅ تم حفظ المفتاح!');
+    }
+  }
+
+  // Restore key
+  const saved = sessionStorage.getItem('groq_key');
+  if (saved) document.getElementById('apiKey').value = saved;
+
+  function getKey() {
+    return document.getElementById('apiKey').value.trim() || sessionStorage.getItem('groq_key');
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('errorBox');
+    box.textContent = msg;
+    box.classList.add('show');
+    setTimeout(() => box.classList.remove('show'), 6000);
+  }
+
+  async function generateQuestions() {
+    const key = getKey();
+    if (!key) { showError('❌ أدخل مفتاح Groq API أولاً'); return; }
+
+    const letter = selectedLetter || LETTERS[Math.floor(Math.random() * LETTERS.length)];
+    const category = document.getElementById('category').value;
+    const difficulty = document.getElementById('difficulty').value;
+    const count = questionCount;
+
+    const btn = document.getElementById('generateBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    document.getElementById('errorBox').classList.remove('show');
+
+    const prompt = `أنت موسوعة ثقافية متخصصة. أنشئ بالضبط ${count} سؤالاً ثقافياً في تخصص "${category}".
+
+الشروط:
+1. كل إجابة يجب أن تبدأ بحرف "${letter}" (الحرف ${letter})
+2. ${difficulty === 'مختلطة' ? 'وزع الأسئلة: بعضها سهل وبعضها متوسط وبعضها صعب' : `مستوى الصعوبة: ${difficulty}`}
+3. الأسئلة يجب أن تكون دقيقة وموثوقة ومناسبة للمسابقات الثقافية الرسمية
+4. تنوع في صياغة الأسئلة
+
+أجب بـ JSON فقط بهذا الشكل (لا تضف أي نص خارجه):
+{
+  "questions": [
+    {
+      "question": "نص السؤال هنا؟",
+      "answer": "الإجابة تبدأ بـ${letter}",
+      "difficulty": "سهل|متوسط|صعب"
+    }
+  ]
+}`;
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.7,
+          max_tokens: 3000,
+          response_format: { type: 'json_object' }
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error?.message || `خطأ ${response.status}`);
+      }
+
+      const data = await response.json();
+      const content = data.choices[0]?.message?.content;
+      const parsed = JSON.parse(content);
+      const questions = parsed.questions || [];
+
+      renderQuestions(questions, letter, category);
+
+      // Stats
+      document.getElementById('statsBar').style.display = 'flex';
+      document.getElementById('statCount').textContent = questions.length;
+      document.getElementById('statLetter').textContent = letter;
+      document.getElementById('statCat').textContent = category.replace(/[🌍🔬📜📚⚽🎨🏥🗺️🧩💡💬🦁🚀☪️💼🎬🍽️🔢👤🏛️]/gu, '').trim();
+
+    } catch (e) {
+      showError(`❌ خطأ: ${e.message}`);
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+
+  function renderQuestions(questions, letter, category) {
+    const container = document.getElementById('questionsContainer');
+    if (!questions.length) {
+      container.innerHTML = '<div class="empty-state"><div class="icon">😕</div><p>لم يتم العثور على أسئلة، حاول مرة أخرى</p></div>';
+      return;
+    }
+
+    container.innerHTML = questions.map((q, i) => `
+      <div class="question-card">
+        <div class="q-header">
+          <span class="q-num">س ${i + 1}</span>
+          <div class="q-text">${q.question} <span class="q-letter-tag">${letter}</span></div>
+        </div>
+        <div class="q-meta">
+          <span class="badge badge-cat">${category.replace(/[🌍🔬📜📚⚽🎨🏥🗺️🧩💡💬🦁🚀☪️💼🎬🍽️🔢👤🏛️]/gu,'').trim()}</span>
+          <span class="badge badge-diff ${q.difficulty}">${q.difficulty}</span>
+        </div>
+        <button class="answer-toggle" onclick="toggleAnswer(this)">
+          <span>اضغط لعرض الإجابة</span>
+          <span class="arrow">▲</span>
+        </button>
+        <div class="answer-box">✅ ${q.answer}</div>
+      </div>
+    `).join('');
+  }
+
+  function toggleAnswer(btn) {
+    btn.classList.toggle('open');
+    const box = btn.nextElementSibling;
+    box.classList.toggle('visible');
+    btn.querySelector('span:first-child').textContent = box.classList.contains('visible') ? 'إخفاء الإجابة' : 'اضغط لعرض الإجابة';
+  }
+</script>
+
+</body>
+</html>
